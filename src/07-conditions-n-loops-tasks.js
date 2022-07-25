@@ -343,8 +343,33 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const arr = [];
+  const AllBrackets = [
+    ['(', ')'],
+    ['[', ']'],
+    ['{', '}'],
+    ['<', '>'],
+  ];
+
+  str.split('').forEach((i) => {
+    const index = AllBrackets.findIndex((el) => el[1] === i);
+    if (index === -1) {
+      arr.push(i);
+      return;
+    }
+
+
+    let elem = arr.slice(-1);
+
+    elem = elem.length ? elem[0] : '';
+    if (elem === AllBrackets[index][0]) {
+      arr.pop();
+    } else {
+      arr.push(i);
+    }
+  });
+  return arr.length === 0;
 }
 
 
@@ -385,8 +410,15 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const filter = pathes.map((item) => item.split('/'));
+  const path = pathes
+    .map((item) => item.split('/'))
+    .flat()
+    .filter((str, i, arr) => arr.indexOf(str) !== arr.lastIndexOf(str) && arr.includes(str, i + 1))
+    .filter((str) => filter.every((arrStr) => arrStr.includes(str)))
+    .join('/');
+  return path.length > 1 ? `${path}/` : path;
 }
 
 
